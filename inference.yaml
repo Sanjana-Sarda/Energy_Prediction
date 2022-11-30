@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: inference-container
-        imagePullPolicy: Always
+        imagePullPolicy: Never
         image: k8-model:latest
         command: ["python3",  "inference.py"]
       restartPolicy: Never
