@@ -5,6 +5,9 @@ metadata:
 spec:
   template:
     spec:
+      securityContext:
+            runAsGroup: 3000
+            runAsUser: 3000
       containers:
       - name: inference-container
         imagePullPolicy: Never
