@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: inference-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: inference-container
+        imagePullPolicy: Always
+        image: k8-model:latest
+        command: ["python3",  "inference.py"]
+      restartPolicy: Never
+  backoffLimit: 0
