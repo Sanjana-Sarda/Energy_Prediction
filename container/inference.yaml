@@ -10,7 +10,7 @@ spec:
             runAsUser: 3000
       containers:
       - name: inference-container
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         image: k8-model:latest
         command: ["python3",  "inference.py"]
       restartPolicy: Never
