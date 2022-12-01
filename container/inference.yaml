@@ -13,5 +13,7 @@ spec:
         imagePullPolicy: IfNotPresent
         image: k8-model:latest
         command: ["python3",  "inference.py"]
+      nodeSelector:
+        house: 1
       restartPolicy: Never
   backoffLimit: 0
