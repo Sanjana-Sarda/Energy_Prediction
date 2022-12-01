@@ -16,4 +16,9 @@ spec:
       nodeSelector:
         house: a
       restartPolicy: Never
+      tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: pixie
   backoffLimit: 0
