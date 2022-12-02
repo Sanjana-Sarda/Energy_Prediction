@@ -26,7 +26,7 @@ NN_model = load_model("NN_test.h5")
 data = pd.read_csv('test_data_8156.csv')
 data = data.drop(columns=['dataid'])
 
-y = data.loc[['Total Energy (kWh)', 'Total Solar Energy (kWh)']]
+y = data[['Total Energy (kWh)', 'Total Solar Energy (kWh)']]
 X = data.drop(columns=['Total Energy (kWh)', 'Total Solar Energy (kWh)'])
 scaler = StandardScaler()
 X_week = np.zeros([num_points, X.shape[1]])
