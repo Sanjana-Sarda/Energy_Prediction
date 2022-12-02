@@ -38,13 +38,13 @@ y_week = np.zeros([num_points, y.shape[1]])
 
 for idx, X_row, in X.iterrows():
     X_row = np.array(X_row).reshape((1, 1450))
-    y_row = y.iloc(idx)
+    y_row = np.array(y.iloc(idx))
+    print (y_row)
     #X_row = scaler.fit_transform(X_row)
     inf = NN_model(X_row)
-    print (inf)
     all_inf.append(inf)
     X_week[count] = X_row
-    y_week[count] = np.array(y_row)
+    y_week[count] = y_row
     
     count +=1
     if (count == num_points):
