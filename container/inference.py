@@ -5,6 +5,7 @@ from sklearn.metrics import mean_absolute_error
 import numpy as np
 import paho.mqtt.publish as publish 
 import paho.mqtt.subscribe as subscribe
+import tensorflow as tf
 
 
 def train(model, X_train, y_train):
@@ -12,8 +13,11 @@ def train(model, X_train, y_train):
     model.fit(X_train, y_train, epochs=5, batch_size=32, validation_split = 0.2)
     return model
 
-def finetune():
-    pass
+def finetune(model, X_train, y_train):
+    for l in range(len(model.layers) - 2):
+        model.layers[l].trainable = False
+        model.compile(optimizer=Adam(1e-2), loss='mean_absolute_error', metrics=['mean_absolute_error'])
+        model.fit(X_train, y_train, epochs=5, batch_size=32, validation_split = 0.2)
 
 num_points = 336
 count = 0
@@ -44,16 +48,14 @@ for idx, X_row, in X.iterrows():
     count +=1
     if (count == num_points):
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
-        retrained_model = train(NN_model, X_week, y_week)
-        post_mae = mean_absolute_error(retrained_model(X_week), y_week)
-        publish.single("House/a", [retrained_model, pre_mae, post_mae], hostname = mqttBroker) # send mae before and after
+        NN_model = train(NN_model, X_week, y_week)
+        post_mae = mean_absolute_error(NN_model(X_week), y_week)
+        publish.single("House/a", [NN_model, pre_mae, post_mae], hostname = mqttBroker) # send mae before and after
         updated_model = subscribe.simple("Gobal_Model", hostname =mqttBroker, keepalive=60)
-        #updated model = finetuned mdoel
+        updated_model = finetune(updated_model, X_week, y_week)
         updated_mae = mean_absolute_error(updated_model(X_week), y_week)
         if (post_mae<=updated_mae):
-            NN_model = updated_model
-        else:
-            NN_model = retrained_model
+            NN_model = tf.keras.models.clone_model(updated_model)
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
