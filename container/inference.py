@@ -27,7 +27,7 @@ mqttBroker = "100.90.105.93"
 
 print("Running inference...")
 NN_model = load_model("NN_test.h5")
-data = pd.read_csv('test_data_8156.csv')
+data = pd.read_csv('test_data_8156.csv', index_col=0)
 data = data.drop(columns=['dataid'])
 
 y = data[['Total Energy (kWh)', 'Total Solar Energy (kWh)']]
@@ -35,7 +35,6 @@ X = data.drop(columns=['Total Energy (kWh)', 'Total Solar Energy (kWh)'])
 scaler = StandardScaler()
 X_week = np.zeros([num_points, X.shape[1]])
 y_week = np.zeros([num_points, y.shape[1]])
-
 
 for idx, X_row, in X.iterrows():
     y_row = y.loc(idx)
