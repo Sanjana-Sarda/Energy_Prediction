@@ -60,7 +60,7 @@ for idx, X_row, in X.iterrows():
          #   NN_model = tf.keras.models.clone_model(updated_model)
         #X_week = np.zeros([num_points, X.shape[1]])
         #y_week = np.zeros([num_points, y.shape[1]])
-        #count = 0 
+        count = 0 
         
         
     
