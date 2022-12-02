@@ -1,4 +1,4 @@
-sklearn
+scikit-learn
 datetime
 pytz
 pandas
