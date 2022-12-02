@@ -37,6 +37,7 @@ X_week = np.zeros([num_points, X.shape[1]])
 y_week = np.zeros([num_points, y.shape[1]])
 
 for idx, X_row, in X.iterrows():
+    X_row = np.array(X_row)
     y_row = y.loc(idx)
     #X_row = scaler.fit_transform(X_row)
     inf = NN_model(X_row)
