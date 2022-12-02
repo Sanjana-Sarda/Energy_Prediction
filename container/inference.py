@@ -39,7 +39,7 @@ y_week = np.zeros([num_points, y.shape[1]])
 
 for idx, X_row, in X.iterrows():
     y_row = y.loc(idx)
-    X_temp = scaler.fit_transform(X_row)
+    X_temp = scaler.fit_transform(X_row.reshape(-1, 1))
     inf = NN_model(X_row)
     all_inf.append(inf)
     X_week[count] = X_row
