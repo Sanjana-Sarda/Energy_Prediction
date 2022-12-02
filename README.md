@@ -4,11 +4,19 @@ Setup tailscale on controller and all nodes.
 
 On Controller
 ```
+git pull
 docker build -t k8-model -f Dockerfile .
 docker save --output k8-model:latest.tar k8-model:latest
 kubectl label nodes <node-name> house=<house-letter>
 rsync -v k8-model-latest.tar <node-ip>:k8-model-latest.tar
 kubectl create -f inference.yaml
+```
+
+Mosquitto Setup
+```
+sudo apt install mosquitto 
+sudo service mosquitto start
+
 ```
 
 On Node
