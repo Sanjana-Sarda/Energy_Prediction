@@ -15,7 +15,9 @@ kubectl create -f inference.yaml
 Mosquitto Setup
 ```
 sudo apt install mosquitto 
-sudo service mosquitto start
+sudo service mosquitto start // for testing
+sudo service mosquitto stop
+sudo mosquito -c mosquitto.conf 
 
 ```
 
