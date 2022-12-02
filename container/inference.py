@@ -51,15 +51,16 @@ for idx, X_row, in X.iterrows():
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
         NN_model = train(NN_model, X_week, y_week)
         post_mae = mean_absolute_error(NN_model(X_week), y_week)
-        publish.single("House/a", [NN_model, pre_mae, post_mae], hostname = mqttBroker) # send mae before and after
-        updated_model = subscribe.simple("Gobal_Model", hostname =mqttBroker, keepalive=60)
-        updated_model = finetune(updated_model, X_week, y_week)
-        updated_mae = mean_absolute_error(updated_model(X_week), y_week)
-        if (post_mae<=updated_mae):
-            NN_model = tf.keras.models.clone_model(updated_model)
-        X_week = np.zeros([num_points, X.shape[1]])
-        y_week = np.zeros([num_points, y.shape[1]])
-        count = 0 
+        #publish.single("House/a", [NN_model, pre_mae, post_mae], hostname = mqttBroker) # send mae before and after
+        publish.single("House/a",  pre_mae, hostname = mqttBroker) # send mae before and after
+        #updated_model = subscribe.simple("Gobal_Model", hostname =mqttBroker, keepalive=60)
+        #updated_model = finetune(updated_model, X_week, y_week)
+        #updated_mae = mean_absolute_error(updated_model(X_week), y_week)
+        #if (post_mae<=updated_mae):
+         #   NN_model = tf.keras.models.clone_model(updated_model)
+        #X_week = np.zeros([num_points, X.shape[1]])
+        #y_week = np.zeros([num_points, y.shape[1]])
+        #count = 0 
         
         
     
