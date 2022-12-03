@@ -23,9 +23,8 @@ def on_connect(client, userdata, flags, rc):
         
 def get_house_model(client, userdata, msg):
     model_weights[msg.topic[-1]] = deserialize(msg.payload)
-    print (model_weights)
     for i in range(6):
-        NN_model.weights[i] = sum([w*model_weights["a"] for w in weightage.values()])
+        NN_model.weights[i] = sum([w*model_weights["a"][i] for w in weightage.values()])
     client.publish("Global_Model", serialize(NN_model))
     
 def on_message(clientdata, userdata, msg):
