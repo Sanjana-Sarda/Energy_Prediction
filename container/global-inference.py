@@ -24,6 +24,9 @@ def on_connect(client, userdata, flags, rc):
 def get_house_model(client, userdata, msg):
     model_weights[msg.topic[-1]] = deserialize(msg)
     
+def on_message(clientdata, userdata, msg):
+    print(msg)
+    
 
 model_weights = {}
 weightage = {"a":1}
@@ -37,7 +40,8 @@ client = mqtt.Client("Controller")
 client.on_connect = on_connect
 #client.message_callback_add('House/pre_mae', pre_mae)
 #client.message_callback_add('House/pre_mae', post_mae)
-client.message_callback_add('House/model', get_house_model)
+client.message_callback_add('House/model/a', get_house_model)
+client.on_message = on_message
 client.connect(mqttBroker)
 client.subscribe("House/#")
 
