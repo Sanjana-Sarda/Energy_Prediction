@@ -13,14 +13,15 @@ import pickle
 
 def train(model, X_train, y_train):
     model.compile(optimizer=Adam(1e-5), loss='mean_absolute_error', metrics=['mean_absolute_error'])
-    model.fit(X_train, y_train, epochs=5, batch_size=32, validation_split = 0.2)
-    return model
+    model.fit(X_train, y_train, epochs=2, batch_size=32, validation_split = 0.2)
+    return model.get_weights()
 
 def finetune(model, X_train, y_train):
     for l in range(len(model.layers) - 2):
         model.layers[l].trainable = False
         model.compile(optimizer=Adam(1e-2), loss='mean_absolute_error', metrics=['mean_absolute_error'])
-        model.fit(X_train, y_train, epochs=5, batch_size=32, validation_split = 0.2)
+        model.fit(X_train, y_train, epochs=2, batch_size=32, validation_split = 0.2)
+    return model.get_weights()
 
 #def on_connect(client, userdata, msg):
  #   client.subscribe("Global_Model")
@@ -73,7 +74,7 @@ for idx, X_row, in X.iterrows():
     count +=1
     if (count == num_points):
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
-        NN_model = train(NN_model, X_week, y_week)
+        NN_model.set_weights(train(NN_model, X_week, y_week))
         post_mae = mean_absolute_error(NN_model(X_week), y_week)
         publish.single("House/a", serialize(NN_model), hostname = mqttBroker) 
         publish.single("House/a/pre_mae",  pre_mae, hostname = mqttBroker) 
@@ -81,10 +82,10 @@ for idx, X_row, in X.iterrows():
         weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60))
         updated_model = tf.keras.models.clone_model(NN_model)
         updated_model.set_weights(weights)
-        updated_model = finetune(updated_model, X_week, y_week)
+        updated_model.set_weights(finetune(updated_model, X_week, y_week))
         updated_mae = mean_absolute_error(updated_model(X_week), y_week)
         if (post_mae<=updated_mae):
-            NN_model = tf.keras.models.clone_model(updated_model)
+            NN_model.set_weights(updated_model.get_weights())
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
