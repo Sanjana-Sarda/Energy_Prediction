@@ -45,6 +45,7 @@ client.on_connect = on_connect
 #client.message_callback_add('House/pre_mae', post_mae)
 client.message_callback_add('House/model/a', get_house_model)
 client.on_message = on_message
+client.on_publish = on_message
 client.connect(mqttBroker)
 client.subscribe("House/#")
 
