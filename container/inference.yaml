@@ -12,7 +12,7 @@ spec:
       - name: inference-container
         imagePullPolicy: IfNotPresent
         image: k8-model:latest
-        command: ["python3",  "inference.py"]
+        command: ["python3",  "worker-inference.py"]
       nodeSelector:
         house: a
       restartPolicy: Never
