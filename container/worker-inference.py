@@ -69,7 +69,7 @@ for idx, X_row, in X.iterrows():
         publish.single("House/model/a", serialize(NN_model), hostname = mqttBroker) 
         publish.single("House/pre_mae/a",  pre_mae, hostname = mqttBroker) 
         publish.single("House/post_mae/a",  post_mae, hostname = mqttBroker) 
-        weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60))
+        weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60).payload)
         updated_model = tf.keras.models.clone_model(NN_model)
         updated_model.set_weights(weights)
         updated_model.set_weights(finetune(updated_model, X_week, y_week))
