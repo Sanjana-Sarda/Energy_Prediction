@@ -38,6 +38,7 @@ client.on_connect = on_connect
 #client.message_callback_add('House/pre_mae', pre_mae)
 #client.message_callback_add('House/pre_mae', post_mae)
 client.message_callback_add('House/model', get_house_model)
+client.connect(mqttBroker)
 client.subscribe("House/#")
 
 NN_model = load_model("NN_test.h5")
