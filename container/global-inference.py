@@ -6,7 +6,6 @@ import numpy as np
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish 
 import paho.mqtt.subscribe as subscribe
-import tensorflow as tf
 from keras.optimizers import Adam
 import pickle
 
