@@ -44,7 +44,7 @@ client.subscribe("House/#")
 NN_model = load_model("NN_test.h5")
 
 for i in range(6):
-    NN_model.weights[i] = sum([w*NN_model for w in weightage.values()])
+    NN_model.weights[i] = sum([w*NN_model.weights[i] for w in weightage.values()])
 client.publish("Global_Model", serialize(NN_model))
     
 
