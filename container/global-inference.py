@@ -23,6 +23,10 @@ def on_connect(client, userdata, flags, rc):
         
 def get_house_model(client, userdata, msg):
     model_weights[msg.topic[-1]] = deserialize(msg)
+    print (model_weights)
+    for i in range(6):
+        NN_model.weights[i] = sum([w*model_weights["a"] for w in weightage.values()])
+    client.publish("Global_Model", serialize(NN_model))
     
 def on_message(clientdata, userdata, msg):
     print(msg)
@@ -31,7 +35,7 @@ def on_message(clientdata, userdata, msg):
 model_weights = {}
 weightage = {"a":1}
 
-
+NN_model = load_model("NN_test.h5")
     
 mqttBroker = "100.90.105.93"
 
@@ -45,11 +49,8 @@ client.on_message = on_message
 client.connect(mqttBroker)
 client.subscribe("House/#")
 
-NN_model = load_model("NN_test.h5")
 
-for i in range(6):
-    NN_model.weights[i] = sum([w*NN_model.weights[i] for w in weightage.values()])
-client.publish("Global_Model", serialize(NN_model))
+
     
 
 client.loop_forever()
