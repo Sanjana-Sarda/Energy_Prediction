@@ -12,14 +12,7 @@ spec:
       - name: inference-container
         imagePullPolicy: IfNotPresent
         image: k8-model:latest
-        volumeMounts:
-        - name: datastorage
-          mountPath: /
         command: ["python3",  "inference.py"]
-      volumes:
-      - name: datastorage
-        persistentVolumeClaim:
-         claimName: my-claim
       nodeSelector:
         house: a
       restartPolicy: Never
