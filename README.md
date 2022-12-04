@@ -17,7 +17,7 @@ Mosquitto Setup
 sudo apt install mosquitto 
 sudo service mosquitto start // for testing
 sudo service mosquitto stop
-sudo mosquito -c mosquitto.conf 
+sudo mosquitto -c mosquitto.conf 
 
 ```
 

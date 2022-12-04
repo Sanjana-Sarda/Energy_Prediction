@@ -22,6 +22,7 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe("Global_Model")
         
 def get_house_model(client, userdata, msg):
+    global model_weights
     model_weights[msg.topic[-1]] = deserialize(msg.payload)
     if (len(model_weights.values())==houses):
         for i in range(6):
