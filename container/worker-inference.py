@@ -81,7 +81,6 @@ for idx, X_row, in X.iterrows():
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
-        break
         
         
     

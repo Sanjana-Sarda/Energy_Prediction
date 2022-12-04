@@ -23,9 +23,11 @@ def on_connect(client, userdata, flags, rc):
         
 def get_house_model(client, userdata, msg):
     model_weights[msg.topic[-1]] = deserialize(msg.payload)
-    for i in range(6):
-        NN_model.weights[i] = sum([w*model_weights["a"][i] for w in weightage.values()])
-    client.publish("Global_Model", serialize(NN_model))
+    if (len(model_weights.values())==houses):
+        for i in range(6):
+            NN_model.weights[i] = sum([w*model_weights["a"][i] for w in weightage.values()])
+        client.publish("Global_Model", serialize(NN_model))
+        model_weights = {}
     
 def on_message(clientdata, userdata, msg):
     print(msg)
@@ -33,6 +35,7 @@ def on_message(clientdata, userdata, msg):
 
 model_weights = {}
 weightage = {"a":1}
+houses = 1
 
 NN_model = load_model("NN_test.h5")
     
