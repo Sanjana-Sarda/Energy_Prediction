@@ -14,7 +14,7 @@ spec:
         image: k8-model:latest
         command: ["python3",  "inference.py"]
       nodeSelector:
-        house: a
+        house: b
       restartPolicy: Never
       tolerations:
       - effect: NoSchedule
