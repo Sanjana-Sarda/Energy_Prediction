@@ -8,8 +8,6 @@ RUN pip install --no-cache-dir --upgrade pip \
 RUN curl -LO https://dl.k8s.io/release/v1.21.5/bin/linux/amd64/kubectl \
   && mv kubectl /usr/local/bin
 
-ENV HOUSE_NAME=a
-
 COPY NN_test.h5 ./NN_test.h5
 COPY inference.py ./inference.py
 COPY mean_orig.csv ./mean_orig.csv
