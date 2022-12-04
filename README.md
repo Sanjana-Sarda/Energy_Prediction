@@ -26,5 +26,6 @@ sudo mosquitto -c mosquitto.conf
 On Node
 ```
 sudo tailscale up -ssh
+sudo apt-get install rsync
 sudo k3s ctr images import k8-model-latest.tar 
 ```
