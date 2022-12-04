@@ -50,7 +50,6 @@ mqttBroker = "100.90.105.93"
 
 client = mqtt.Client("House_a")
 
-client.on_connect = on_connect
 #client.message_callback_add('House/pre_mae', pre_mae)
 #client.message_callback_add('House/pre_mae', post_mae)
 client.on_message = on_message
