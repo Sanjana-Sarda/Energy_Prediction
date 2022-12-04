@@ -10,7 +10,6 @@ docker image rm --force <image id> //Docker Clean up
 docker build -t k8-model -f Dockerfile .
 docker save --output k8-model-latest.tar k8-model:latest
 kubectl label nodes <node-name> house=<house-letter>
-kubectl create -f storageClass.yaml
 rsync -v k8-model-latest.tar <node-ip>:k8-model-latest.tar
 kubectl create -f inference.yaml
 ```
