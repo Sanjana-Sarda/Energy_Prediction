@@ -73,10 +73,10 @@ y_week = np.zeros([num_points, y.shape[1]])
 
 for idx, X_row, in X.iterrows():
     X_row = np.array(X_row).reshape((1, 1450))
+    y_row = np.array(y.iloc[idx])
     X_week[count] = X_row
     y_week[count] = y_row
     X_row = (X_row - scaler_mean)/np.sqrt(scaler_var)
-    y_row = np.array(y.iloc[idx])
     inf = NN_model(X_row)
     all_inf.append(inf)
     
