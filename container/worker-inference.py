@@ -57,7 +57,6 @@ for idx, X_row, in X.iterrows():
     y_row = np.array(y.iloc[idx])
     #X_row = scaler.fit_transform(X_row)
     inf = NN_model(X_row)
-    print (inf)
     all_inf.append(inf)
     X_week[count] = X_row
     y_week[count] = y_row
@@ -71,6 +70,7 @@ for idx, X_row, in X.iterrows():
         publish.single("House/pre_mae/a",  pre_mae, hostname = mqttBroker) 
         publish.single("House/post_mae/a",  post_mae, hostname = mqttBroker) 
         weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60).payload)
+        print (weights)
         updated_model = tf.keras.models.clone_model(NN_model)
         updated_model.set_weights(weights)
         updated_model.set_weights(finetune(updated_model, X_week, y_week))
