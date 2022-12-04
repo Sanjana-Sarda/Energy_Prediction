@@ -80,12 +80,12 @@ for idx, X_row, in X.iterrows():
     count +=1
     if (count == num_points):
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
-        print ("pre_mae ="+ pre_mae)
+        print ("pre_mae ="+ str(pre_mae))
         trained_model = tf.keras.models.clone_model(NN_model)
         trained_model.set_weights(NN_model.get_weights())
         trained_model.set_weights(train(trained_model, X_week, y_week))
         post_mae = mean_absolute_error(trained_model(X_week), y_week)
-        print ("post_mae ="+ post_mae)
+        print ("post_mae ="+ str(post_mae))
         if (post_mae<=pre_mae):
             NN_model.set_weights(trained_model.get_weights())
         else:
@@ -105,7 +105,7 @@ for idx, X_row, in X.iterrows():
         updated_model.set_weights(weights)
         updated_model.set_weights(finetune(updated_model, X_week, y_week))
         updated_mae = mean_absolute_error(updated_model(X_week), y_week)
-        print ("updated_mae" + updated_mae)
+        print ("updated_mae" + str(updated_mae))
         if (updated_mae<=post_mae):
             NN_model.set_weights(updated_model.get_weights())
         scaler_mean = np.mean(X_week, axis=0).reshape((1, 1450))
