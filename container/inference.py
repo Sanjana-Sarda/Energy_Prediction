@@ -8,6 +8,7 @@ import paho.mqtt.subscribe as subscribe
 import tensorflow as tf
 from keras.optimizers import Adam
 import pickle
+import os
 
 
 def on_message(clientdata, userdata, msg):
@@ -44,7 +45,7 @@ num_points = 336
 count = 0
 all_inf = []
 model_received = False
-house_name = "b"
+house_name = os.environ["HOUSE_NAME"]
 
 mqttBroker = "100.90.105.93"
 
