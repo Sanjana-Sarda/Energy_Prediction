@@ -6,4 +6,3 @@ keras
 numpy
 paho-mqtt
 tensorflow
-pickle

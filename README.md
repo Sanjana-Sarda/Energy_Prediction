@@ -5,6 +5,8 @@ Setup tailscale on controller and all nodes.
 On Controller
 ```
 git pull
+docker images //Docker Clean up
+docker image rm --force <image id> //Docker Clean up
 docker build -t k8-model -f Dockerfile .
 docker save --output k8-model:latest.tar k8-model:latest
 kubectl label nodes <node-name> house=<house-letter>
