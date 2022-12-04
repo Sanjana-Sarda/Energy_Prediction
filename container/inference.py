@@ -58,12 +58,12 @@ client.subscribe("Global_Model")
 print("Running inference...")
 NN_model = load_model("NN_test.h5")
 data = pd.read_csv('test_data.csv', index_col=0)
+data = data.reset_index(drop=True)
 scaler_mean = pd.read_csv('mean_orig.csv').iloc[:, 1].to_numpy().reshape((1, 1450))
 scaler_var = pd.read_csv('var_orig.csv').iloc[:, 1].to_numpy().reshape((1, 1450))
 data = data.drop(columns=['dataid'])
 
 y = data[['Total Energy (kWh)', 'Total Solar Energy (kWh)']]
-print (y.shape)
 X = data.drop(columns=['Total Energy (kWh)', 'Total Solar Energy (kWh)'])
 X_week = np.zeros([num_points, X.shape[1]])
 y_week = np.zeros([num_points, y.shape[1]])
