@@ -1,6 +1,5 @@
 from keras.models import load_model
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error 
 import numpy as np
 import paho.mqtt.client as mqtt
@@ -45,13 +44,11 @@ num_points = 336
 count = 0
 all_inf = []
 model_received = False
+house_name = "a"
 
 mqttBroker = "100.90.105.93"
 
-client = mqtt.Client("House_a")
-
-#client.message_callback_add('House/pre_mae', pre_mae)
-#client.message_callback_add('House/pre_mae', post_mae)
+client = mqtt.Client("House_"+house_name)
 client.on_message = on_message
 client.on_publish = on_publish
 client.connect(mqttBroker)
@@ -75,28 +72,25 @@ for idx, X_row, in X.iterrows():
     X_row = np.array(X_row).reshape((1, 1450))
     X_row = (X_row - scaler_mean)/np.sqrt(scaler_var)
     y_row = np.array(y.iloc[idx])
-    #X_row = scaler.fit_transform(X_row)
     inf = NN_model(X_row)
     all_inf.append(inf)
     X_week[count] = X_row
     y_week[count] = y_row
     
     count +=1
-    print (count)
     if (count == num_points):
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
         NN_model.set_weights(train(NN_model, X_week, y_week))
         post_mae = mean_absolute_error(NN_model(X_week), y_week)
-        publish.single("House/model/a", serialize(NN_model), hostname = mqttBroker) 
-        publish.single("House/pre_mae/a",  pre_mae, hostname = mqttBroker) 
-        publish.single("House/post_mae/a",  post_mae, hostname = mqttBroker) 
+        publish.single("House/model/"+house_name, serialize(NN_model), hostname = mqttBroker) 
+        publish.single("House/pre_mae/"+house_name,  pre_mae, hostname = mqttBroker) 
+        publish.single("House/post_mae/"+house_name,  post_mae, hostname = mqttBroker) 
         client.loop_start()
         while(not model_received):
             print ("waiting")
             continue
         client.loop_stop()
         #weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60).payload)
-        print (weights)
         updated_model = tf.keras.models.clone_model(NN_model)
         updated_model.set_weights(weights)
         updated_model.set_weights(finetune(updated_model, X_week, y_week))
@@ -108,7 +102,3 @@ for idx, X_row, in X.iterrows():
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
-        
-        
-    
-    
