@@ -57,6 +57,7 @@ for idx, X_row, in X.iterrows():
     y_row = np.array(y.iloc[idx])
     #X_row = scaler.fit_transform(X_row)
     inf = NN_model(X_row)
+    print (inf)
     all_inf.append(inf)
     X_week[count] = X_row
     y_week[count] = y_row
@@ -81,6 +82,7 @@ for idx, X_row, in X.iterrows():
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
+    print (count)
         
         
     
