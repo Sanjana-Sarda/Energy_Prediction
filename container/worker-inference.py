@@ -11,6 +11,16 @@ from keras.optimizers import Adam
 import pickle
 
 
+def on_message(clientdata, userdata, msg):
+    global model_received, weights
+    print("Subscribed")
+    weights = deserialize(msg.payload)
+    model_received = True
+
+def on_publish(clientdata, userdata, msg):
+    print("Published")
+
+
 def train(model, X_train, y_train):
     model.compile(optimizer=Adam(1e-5), loss='mean_absolute_error', metrics=['mean_absolute_error'])
     model.fit(X_train, y_train, epochs=2, batch_size=32, validation_split = 0.2)
@@ -37,6 +47,17 @@ all_inf = []
 model_received = False
 
 mqttBroker = "100.90.105.93"
+
+client = mqtt.Client("House_a")
+
+client.on_connect = on_connect
+#client.message_callback_add('House/pre_mae', pre_mae)
+#client.message_callback_add('House/pre_mae', post_mae)
+client.on_message = on_message
+client.on_publish = on_publish
+client.connect(mqttBroker)
+client.subscribe("Global_Model")
+
 
 print("Running inference...")
 NN_model = load_model("NN_test.h5")
@@ -70,7 +91,12 @@ for idx, X_row, in X.iterrows():
         publish.single("House/model/a", serialize(NN_model), hostname = mqttBroker) 
         publish.single("House/pre_mae/a",  pre_mae, hostname = mqttBroker) 
         publish.single("House/post_mae/a",  post_mae, hostname = mqttBroker) 
-        weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60).payload)
+        client.loop_start()
+        while(not model_received):
+            print ("waiting")
+            continue
+        client.loop_stop()
+        #weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60).payload)
         print (weights)
         updated_model = tf.keras.models.clone_model(NN_model)
         updated_model.set_weights(weights)
