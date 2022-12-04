@@ -63,6 +63,7 @@ scaler_var = pd.read_csv('var_orig.csv').iloc[:, 1].to_numpy().reshape((1, 1450)
 data = data.drop(columns=['dataid'])
 
 y = data[['Total Energy (kWh)', 'Total Solar Energy (kWh)']]
+print (y.shape)
 X = data.drop(columns=['Total Energy (kWh)', 'Total Solar Energy (kWh)'])
 X_week = np.zeros([num_points, X.shape[1]])
 y_week = np.zeros([num_points, y.shape[1]])
@@ -77,6 +78,7 @@ for idx, X_row, in X.iterrows():
     y_week[count] = y_row
     
     count +=1
+    print (count)
     if (count == num_points):
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
         NN_model.set_weights(train(NN_model, X_week, y_week))
@@ -101,3 +103,4 @@ for idx, X_row, in X.iterrows():
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
+        break
