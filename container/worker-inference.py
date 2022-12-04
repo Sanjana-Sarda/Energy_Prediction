@@ -64,7 +64,6 @@ data = data.drop(columns=['dataid'])
 
 y = data[['Total Energy (kWh)', 'Total Solar Energy (kWh)']]
 X = data.drop(columns=['Total Energy (kWh)', 'Total Solar Energy (kWh)'])
-scaler = StandardScaler()
 X_week = np.zeros([num_points, X.shape[1]])
 y_week = np.zeros([num_points, y.shape[1]])
 
