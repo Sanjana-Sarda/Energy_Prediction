@@ -12,4 +12,4 @@ COPY NN_test.h5 ./NN_test.h5
 COPY inference.py ./inference.py
 COPY mean_orig.csv ./mean_orig.csv
 COPY var_orig.csv ./var_orig.csv
-COPY test_data_8156.csv ./test_data.csv
+COPY test_data_9019.csv ./test_data.csv
