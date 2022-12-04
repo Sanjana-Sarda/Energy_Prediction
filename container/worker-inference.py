@@ -62,6 +62,7 @@ for idx, X_row, in X.iterrows():
     y_week[count] = y_row
     
     count +=1
+    print (count)
     if (count == num_points):
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
         NN_model.set_weights(train(NN_model, X_week, y_week))
@@ -70,13 +71,11 @@ for idx, X_row, in X.iterrows():
         publish.single("House/pre_mae/a",  pre_mae, hostname = mqttBroker) 
         publish.single("House/post_mae/a",  post_mae, hostname = mqttBroker) 
         weights = deserialize(subscribe.simple("Global_Model", hostname =mqttBroker, keepalive=60).payload)
-        print (weights)
         updated_model = tf.keras.models.clone_model(NN_model)
         updated_model.set_weights(weights)
         updated_model.set_weights(finetune(updated_model, X_week, y_week))
         updated_mae = mean_absolute_error(updated_model(X_week), y_week)
         if (post_mae<=updated_mae):
-            print ("hi")
             NN_model.set_weights(updated_model.get_weights())
         scaler_mean = np.mean(X_week, axis=0).reshape((1, 1450))
         scalar_var = np.var(X_week, axis=0).reshape((1, 1450))
