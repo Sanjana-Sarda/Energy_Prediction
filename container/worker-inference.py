@@ -50,6 +50,7 @@ X = data.drop(columns=['Total Energy (kWh)', 'Total Solar Energy (kWh)'])
 scaler = StandardScaler()
 X_week = np.zeros([num_points, X.shape[1]])
 y_week = np.zeros([num_points, y.shape[1]])
+a = 0
 
 for idx, X_row, in X.iterrows():
     X_row = np.array(X_row).reshape((1, 1450))
@@ -63,6 +64,7 @@ for idx, X_row, in X.iterrows():
     
     count +=1
     if (count == num_points):
+        a = a+1
         pre_mae = mean_absolute_error(NN_model(X_week), y_week)
         NN_model.set_weights(train(NN_model, X_week, y_week))
         post_mae = mean_absolute_error(NN_model(X_week), y_week)
@@ -82,7 +84,7 @@ for idx, X_row, in X.iterrows():
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
-    print (count)
+    print (a)
         
         
     
