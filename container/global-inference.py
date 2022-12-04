@@ -26,7 +26,7 @@ def get_house_model(client, userdata, msg):
     model_weights[msg.topic[-1]] = deserialize(msg.payload)
     if (len(model_weights.values())==houses):
         for i in range(6):
-            NN_model.weights[i] = sum([w*model_weights["a"][i] for w in weightage.values()])
+            NN_model.weights[i] = sum([weightage[k]*model_weights[k][i] for k in weightage.keys()])
         client.publish("Global_Model", serialize(NN_model))
         model_weights = {}
     
@@ -38,7 +38,7 @@ def on_publish(clientdata, userdata, msg):
 
 model_weights = {}
 weightage = {"a":0.5, "b":0.5}
-houses = 1
+houses = 2
 
 NN_model = load_model("NN_test.h5")
     
