@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: inference-c-job
+spec:
+  template:
+    spec:
+      securityContext:
+            runAsGroup: 3000
+            runAsUser: 3000
+      containers:
+      - name: inference-container
+        imagePullPolicy: IfNotPresent
+        image: k8-model:latest
+        command: ["python3",  "inference.py"]
+      nodeSelector:
+        house: c
+      restartPolicy: Never
+      tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: pixie
+  backoffLimit: 0
