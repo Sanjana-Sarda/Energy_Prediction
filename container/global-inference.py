@@ -33,7 +33,7 @@ def get_house_model(client, userdata, msg):
 def get_inf(client, userdata, msg):
     global inf, min
     print (msg.payload)
-    inf[msg.topic[-1]] = inf[msg.topic[-1]].append(msg.payload)
+    inf[msg.topic[-1]] = inf[msg.topic[-1]].append(msg.payload.decode())
     print (inf[msg.topic[-1]])
     if (len(inf[msg.topic[-1]])==min_val):
         df=pd.DataFrame.from_dict(inf,orient='index').transpose()
