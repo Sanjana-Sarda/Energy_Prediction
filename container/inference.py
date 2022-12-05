@@ -78,7 +78,7 @@ for idx, X_row, in X.iterrows():
     y_week[count] = y_row
     X_row = (X_row - scaler_mean)/np.sqrt(scaler_var)
     inf = NN_model(X_row)
-    all_inf.append(inf)
+    publish.single("House/inf/"+house_name, inf, hostname = mqttBroker) 
     
     count +=1
     if (count == num_points):

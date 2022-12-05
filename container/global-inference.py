@@ -29,6 +29,14 @@ def get_house_model(client, userdata, msg):
             NN_model.weights[i] = sum([weightage[k]*model_weights[k][i] for k in weightage.keys()])
         client.publish("Global_Model", serialize(NN_model))
         model_weights = {}
+
+def get_inf(client, userdata, msg):
+    global inf, min
+    inf[msg.topic[-1]] = inf[msg.topic[-1]].append(msg.payload)
+    if (len(inf[msg.topic[-1]])==min_val):
+        df=pd.DataFrame.from_dict(inf,orient='index').transpose()
+        df.to_csv("inf.csv")
+    
     
 def on_message(clientdata, userdata, msg):
     print("Subscribed")
@@ -38,7 +46,9 @@ def on_publish(clientdata, userdata, msg):
 
 model_weights = {}
 weightage = {"a":0.5, "b":0.5}
+min_val = 4000
 houses = 2
+inf = {"a":[], "b":[], "c":[], "d": []}
 
 NN_model = load_model("NN_test.h5")
     
@@ -50,6 +60,7 @@ client.on_connect = on_connect
 #client.message_callback_add('House/pre_mae', pre_mae)
 #client.message_callback_add('House/pre_mae', post_mae)
 client.message_callback_add('House/model/#', get_house_model)
+client.message_callback_add('House/inf/#', get_inf)
 client.on_message = on_message
 client.on_publish = on_publish
 client.connect(mqttBroker)
