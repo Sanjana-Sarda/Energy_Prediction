@@ -78,7 +78,8 @@ for idx, X_row, in X.iterrows():
     y_week[count] = y_row
     X_row = (X_row - scaler_mean)/np.sqrt(scaler_var)
     inf = NN_model(X_row)
-    publish.single("House/inf/"+house_name, str(float(inf[0, 0]))+"\t"+str(float(inf[0, 1])), hostname = mqttBroker) 
+    all_inf.append(str(float(inf[0, 0]))+"\t"+str(float(inf[0, 1])))
+
     
     count +=1
     if (count == num_points):
@@ -117,3 +118,4 @@ for idx, X_row, in X.iterrows():
         X_week = np.zeros([num_points, X.shape[1]])
         y_week = np.zeros([num_points, y.shape[1]])
         count = 0 
+publish.single("House/inf/"+house_name, pickle.dumps(all_inf), hostname = mqttBroker) 

@@ -31,11 +31,9 @@ def get_house_model(client, userdata, msg):
         model_weights = {}
 
 def get_inf(client, userdata, msg):
-    global inf, min
-    inf[msg.topic[-1]].append(msg.payload.decode("utf-8"))
-    if (len(inf[msg.topic[-1]])==min_val):
-        df=pd.DataFrame.from_dict(inf,orient='index').transpose()
-        df.to_csv("inf.csv")
+    loaded = pickle.loads(msg.payload)
+    df=pd.DataFrame.from_dict(loaded)
+    df.to_csv("inf_"+msg.topic[-1]+".csv")
     
     
 def on_message(clientdata, userdata, msg):
@@ -46,9 +44,7 @@ def on_publish(clientdata, userdata, msg):
 
 model_weights = {}
 weightage = {"a":0.5, "b":0.5}
-min_val = 4000
 houses = 2
-inf = {"a":[], "b":[], "c":[], "d": []}
 
 NN_model = load_model("NN_test.h5")
     
