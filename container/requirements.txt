@@ -5,4 +5,3 @@ pandas
 keras
 numpy
 paho-mqtt
-tensorflow
