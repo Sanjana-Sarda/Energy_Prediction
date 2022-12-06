@@ -1,6 +1,7 @@
 FROM python:3.8.14
 
 COPY requirements.txt ./
+COPY tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl ./tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl
 
 RUN pip install --no-cache-dir --upgrade pip \
   && pip install --ignore-installed --upgrade tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl \
