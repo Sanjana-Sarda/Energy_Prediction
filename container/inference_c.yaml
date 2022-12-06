@@ -11,7 +11,7 @@ spec:
       containers:
       - name: inference-container
         imagePullPolicy: IfNotPresent
-        image: k8-model:latest
+        image: sanjanasarda/energy-prediction:c
         command: ["python3",  "inference.py"]
       nodeSelector:
         house: c
