@@ -3,7 +3,7 @@ FROM python:3.8.14
 COPY requirements.txt ./
 
 RUN pip install --no-cache-dir --upgrade pip \
-  && pip install https://tf.novaal.de/westmere/tensorflow-2.8.0-cp310-cp310-linux_x86_64.whl \
+  && pip install --ignore-installed --upgrade tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl \
   && pip install --no-cache-dir -r requirements.txt
 
 RUN curl -LO https://dl.k8s.io/release/v1.21.5/bin/linux/amd64/kubectl \
