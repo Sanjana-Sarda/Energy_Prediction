@@ -43,8 +43,8 @@ def on_publish(clientdata, userdata, msg):
     print("Published")
 
 model_weights = {}
-weightage = {"a":0.5, "b":0.5}
-houses = 2
+weightage = {"a":0.25, "b":0.25, "c": 0.25, "d": 0.25}
+houses = 4
 
 NN_model = load_model("NN_test.h5")
     
