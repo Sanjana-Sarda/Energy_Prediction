@@ -46,7 +46,7 @@ num_points = 336
 count = 0
 all_inf = []
 model_received = False
-house_name = "c"
+house_name = "d"
 
 mqttBroker = "100.90.105.93"
 
